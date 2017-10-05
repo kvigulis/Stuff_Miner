@@ -1,0 +1,83 @@
+{% extends 'miner/base.html' %}
+
+{%  block title %}Stuff Miner - Add Filter{% endblock %}
+{% block add-filter_active %}active{% endblock %}
+
+{% block body %}
+
+
+{% load staticfiles %}
+<script src="{% static 'miner/keyword_handler.js' %}"></script>
+
+<div class="container">
+
+
+    <div class="card">
+        <h5>Add new Filter:</h5>
+        <form>
+        Title:
+        <input id='title' type="text"><br>
+        Logo url:
+        <input id='logo_url' type="text"><br>
+        Description:
+        <textarea id='description'></textarea><br>
+        Site:
+        <select id="site">
+            <option value="ebay.com">ebay.com</option>
+            <option value="ebay.co.uk">ebay.co.uk</option>
+        </select><br>
+        Search text:
+        <input id='search_text' type="text"><br>
+        Category:
+        <select id="category">
+            <option value="Bussines & Industrial">Bussines & Industrial</option>
+            <option value="Cell phones & Accessories">Cell phones & Accessories</option>
+            <option value="Computers/Tablets & Networking">Computers/Tablets & Networking</option>
+        </select><br>
+        <br>Condition:<br>
+        <input id='cond_new' type="checkbox">New<br>
+        <input id='cond_new_other' type="checkbox">New other<br>
+        <input id='cond_manufacturer_refurbished' type="checkbox">Manufacturer refurbished<br>
+        <input id='cond_seller_refurbished' type="checkbox">Seller refurbished<br>
+        <input id='cond_used' type="checkbox">Used<br>
+        <input id='cond_for_parts' type="checkbox">For parts or not working<br>
+        <input id='cond_not_specified' type="checkbox">Not specified<br><br>
+
+        Min price:
+        <input id='min_p' type="text"><br>
+        Max price:
+        <input id='max_p' type="text"><br>
+        </form>
+
+    </div>
+
+<!-- Add Keywords section -->
+    <div class="card" style="min-width: 500px;">
+            <br><h5>Add keywords:</h5>
+            <div class="container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Keyword</th>
+                            <th>Logic</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+        <div class="card-footer">
+            <a href="{% url 'miner:index' %}">
+                <button class="btn btn-outline-info" id="send_ajax">Save Filter</button>
+            </a>
+
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

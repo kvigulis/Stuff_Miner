@@ -1,0 +1,116 @@
+{% extends 'miner/base.html' %}
+
+{% block title %}Stuff Miner{% endblock %}
+{% block filters_active %}active{% endblock %}
+
+{% block body %}
+	<!-- Filters -->
+    <div class="ml-5 mt-3">
+        <h4 id="heading_user" >{{ user.username }}'s Filters:</h4>
+    </div>
+
+    <div class="card-deck">
+    {% if filter_list %}
+        {% for filter in filter_list %}
+            <style>
+                #filter_card {
+                    min-width:241px;
+                    max-width:241px;
+                }
+                #filter_link {
+                    max-height:30px;
+                }
+
+            </style>
+            <div class="card" id="filter_card">
+                <div class="card-header">
+                    <div class="row justify-content-between" id="filter_link">
+
+                            <a class="text-muted" href="{% url 'miner:detail' filter.id%}" data-toggle="tooltip" data-placement="right" title="{{ filter.filter_description }}">
+                                <h5 >{{ filter.title }}</h5>
+                            </a>
+
+                        <button type="button" class="btn btn-outline-danger btn-sm float-right" data-toggle="modal" data-target="#myModal{{ filter.id }}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+
+                    </div>
+                    </div>
+
+                <!-- Delete Filter Modal -->
+                <div class="modal fade" id="myModal{{ filter.id }}" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Delete Filter <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> </h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete the <b>{{ filter.title }}</b> filter?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form action="{% url 'miner:filter-delete' filter.id %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="filter_id" value="{{ filter.id }}" />
+                                    <button type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>&nbsp;
+                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End Modal -->
+
+                <!-- Filter body-->
+
+                        <a class="carl-link" href="{% url 'miner:detail' filter.id%}" data-toggle="tooltip" data-placement="right" title="{{ filter.filter_description }}">
+                            <img class="card-img-top" src="{{ filter.logo_url }}" alt="Card image cap" style="width:240px;height:160px;">
+                        </a>
+
+                    <div class="card-block">
+                        <small class="card-text">
+                            Site: {{ filter.site }}
+                        </small><br>
+                        <small class="card-text">
+                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" >Category: {{ filter.get_category_display }}</div>
+                        </small>
+                        <small class="card-text">
+                            Condition: {% for condition in filter.condition_set.all %}
+                            <span class="badge badge-secondary">{{ condition.true_condition }}</span>
+                            {% endfor %}
+
+                        </small><br>
+                        <small class="card-text">
+                            Price Range: £ {{ filter.min_price }} - {{ filter.max_price }}
+                        </small>
+                    </div>
+
+
+                <!-- Filter footer-->
+                <div class="card-footer">
+                    <small class="text-muted">Number of results: {{ filter.result_set.all.count }}</small>
+                </div>
+            </div>
+
+
+
+
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="col-sm-12">
+            <br>
+            <a href="{% url 'miner:filter-add' %}">
+                <button type="button" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Filter
+                </button>
+            </a>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+
+
+

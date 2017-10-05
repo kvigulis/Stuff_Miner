@@ -1,0 +1,61 @@
+{% extends 'miner/base.html' %}
+{%  block title %}Stuff Miner - {{filter.filter_title}}{% endblock %}
+{% block detail_active %}active{% endblock %}
+
+{% block body %}
+
+
+
+	<h3>{{ filter.title }}</h3>
+	<h4>{{ filter.description }}</h4>
+
+    Site: {{ filter.site }}<br>
+    Search text: {{ filter.search_text }}<br>
+    Category: {{ filter.get_category_display }}<br>
+    Price Range: £ {{ filter.min_price }} - {{ filter.max_price }}<br>
+    Keywords: {% for keyword in filter.keyword_set.all %}
+        {% if keyword.logic  %}
+            <span class="badge badge-success">{{ keyword.word }}</span>
+        {% else %}
+            <span class="badge badge-danger">{{ keyword.word }}</span>
+        {% endif %}
+    {% endfor %}
+
+	{% if error_message %}
+		<p><strong>{{ error_message }}</strong></p>
+	{% endif %}
+
+    <div class="card-deck">
+        <style>
+            #result_card {
+                min-width:241px;
+                max-width:241px;
+            }
+            #filter_link {
+                max-height:30px;
+            }
+        </style>
+
+	    {% for result in filter.result_set.all %}
+
+            <div class="card" id="result_card">
+                <a class="text" href="{{ result.url }}">
+                    <img class="card-img-top" src="{{ result.image_url }}" alt="Card image cap" style="width:240px;height:160px;">
+                </a>
+                <div class="card-block">
+                    <a class="text-dark" href="{{ result.url }}">
+                        <h5 >{{ result.title }}</h5>
+                    </a>
+
+                    <p class="card-text"><h5>£ {{ result.price }}</h5></p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+
+	    {% endfor %}
+    </div>
+	
+{% endblock %}
+
+
+
