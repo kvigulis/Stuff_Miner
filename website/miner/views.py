@@ -10,6 +10,7 @@ from .script import API
 import json
 
 def send_filter(request):
+    # takes care of the ajax (json) POST request when 'save filter' is pressed.
     if request.is_ajax() and request.method == 'POST':
         data = request.POST.dict()
         filter_data = json.loads(data['filter_data_object'])
